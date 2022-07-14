@@ -5,7 +5,7 @@ import 'Screen/avisos.dart';
 import 'firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   var login = prefs.getBool("login");
@@ -15,7 +15,7 @@ Future<void> main() async {
   runApp(MaterialApp(
     title: 'AlarmApp',
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(primarySwatch: Colors.red, accentColor: Colors.redAccent),
-    home: login == true ? AvisosPage() : InicioPag(),
+    theme: ThemeData(primarySwatch: Colors.red),
+    home: login == true ? const AvisosPage() : const InicioPag(),
   ));
 }

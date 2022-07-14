@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/Screen/servicio.dart';
 
 class ServiciosPage extends StatefulWidget {
   const ServiciosPage({Key? key}) : super(key: key);
@@ -22,7 +23,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         children: [
           GestureDetector(
-            onTap: () => print("HAHAH"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const Servicio(),
+                ),
+              );
+            },
             child: Card(
               margin: const EdgeInsets.all(10),
               elevation: 5,

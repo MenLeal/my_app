@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:my_app/Widgets/servicioambu.dart';
+import 'package:my_app/Widgets/servicioregular.dart';
 
 class Servicio extends StatefulWidget {
-  const Servicio({Key? key}) : super(key: key);
+  const Servicio({Key? key, required this.title}) : super(key: key);
+  final String? title;
 
   @override
   State<Servicio> createState() => _ServicioState();
@@ -12,9 +13,10 @@ class Servicio extends StatefulWidget {
 class _ServicioState extends State<Servicio> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("PutoKike"), automaticallyImplyLeading: true),
-      body: Center(child: Text("JAJAJ")),
-    );
+    if (widget.title == "Traslado") {
+      return const ServicioAmbulancia();
+    } else {
+      return ServicioRegular(title: widget.title);
+    }
   }
 }

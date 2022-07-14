@@ -64,6 +64,12 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
   }
 
   @override
+  void initState() {
+    getLocation();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(

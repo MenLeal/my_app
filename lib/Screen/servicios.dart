@@ -26,12 +26,12 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const Servicio(),
+                  builder: (context) => Servicio(title: "Traslado"),
                 ),
               );
             },
             child: Card(
-              margin: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(5),
               elevation: 5,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -51,6 +51,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
             ),
           ),
           GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Servicio(title: "Prueba COVID"),
+                ),
+              );
+            },
             child: Card(
               margin: const EdgeInsets.all(5),
               elevation: 3,

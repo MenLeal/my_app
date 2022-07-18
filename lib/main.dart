@@ -20,7 +20,7 @@ void main() async {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.red),
       home: login == true
-          ? tipo == "2"
+          ? tipo == '2'
               ? const AdminPanel()
               : const AvisosPage()
           : const InicioPag(),

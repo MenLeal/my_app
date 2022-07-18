@@ -98,7 +98,14 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Servicio(title: "Toma electrocardiograma"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -123,7 +130,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Servicio(title: "Prueba de Dengue"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -148,7 +161,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Servicio(title: "Certificado Médico"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -173,7 +192,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Servicio(title: "Curación"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -198,7 +223,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Servicio(title: "Sutura"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -223,7 +254,14 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Servicio(title: "Toma de signos vitales"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -248,7 +286,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Servicio(title: "Toma de glucosa"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -270,7 +314,14 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Servicio(title: "Recambio de sondas urinarias"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -295,7 +346,14 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Servicio(title: "Consulta Médica General"),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: Card(
@@ -320,7 +378,13 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 ],
               ),
             ),
-            onTap: () => print("="),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Servicio(title: "Inyección"),
+                ),
+              );
+            },
           ),
         ],
       ),

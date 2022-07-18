@@ -75,6 +75,7 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
         appBar: AppBar(
           title: const Text("Enviar Emergencia"),
           centerTitle: true,
+          automaticallyImplyLeading: false,
           actions: [
             IconButton(
               icon: const Icon(Icons.question_mark),
@@ -98,7 +99,8 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
                   "uid": uid,
                   "latitud": _position!.latitude.toString(),
                   "longitud": _position!.longitude.toString(),
-                  "fechahora": DateFormat.yMd().add_jm().format(DateTime.now()),
+                  "fechahora":
+                      DateFormat('d/M/y').add_jm().format(DateTime.now()),
                 }).whenComplete(() {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Se ha enviado la alerta')));

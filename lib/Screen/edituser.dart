@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/Screen/iniciosesion.dart';
 
 class EditarUser extends StatefulWidget {
@@ -30,10 +31,19 @@ class _EditarUserState extends State<EditarUser> {
       FirebaseFirestore.instance.collection('usuarios');
 
   Future signOut() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const InicioPag()),
-    );
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('uid', "");
+    prefs.setBool("login", false);
+    await FirebaseAuth.instance.signOut().whenComplete(() {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const InicioPag()),
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

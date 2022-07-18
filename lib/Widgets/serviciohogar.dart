@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:my_app/Models/servicio.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Hogar extends StatefulWidget {
-  const Hogar({Key? key}) : super(key: key);
+  const Hogar({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
   State<Hogar> createState() => _HogarState();
@@ -16,15 +21,8 @@ class _HogarState extends State<Hogar> {
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
 
-  final origen = TextEditingController();
-  final direccionController = TextEditingController();
-  final correoController = TextEditingController();
-  final contraController = TextEditingController();
-  final contracController = TextEditingController();
-  final numeroController = TextEditingController();
-
-  String? sangre = "A+";
-  List<String> listSangre = ["A+", "A-", "O+", "O-", "AB+", "AB-", "B+", "B-"];
+  final fecha = TextEditingController();
+  final destino = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -84,7 +82,7 @@ class _HogarState extends State<Hogar> {
                     return null;
                   }
                 },
-                controller: numeroController,
+                controller: destino,
                 keyboardType: TextInputType.text,
                 style: const TextStyle(color: Colors.red, fontSize: 14.5),
                 decoration: InputDecoration(
@@ -115,21 +113,47 @@ class _HogarState extends State<Hogar> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30)
                   .copyWith(bottom: 10),
-              child: ElevatedButton(
-                onPressed: () {
+              child: TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Poner DOMICILIO NO VACIO";
+                  } else {
+                    return null;
+                  }
+                },
+                onTap: () async {
                   _selectDate(context);
                 },
-                child: Row(
-                  children: const [
-                    Icon(Icons.date_range),
-                    SizedBox(
-                      width: 8,
+                readOnly: true,
+                controller: fecha,
+                keyboardType: TextInputType.text,
+                style: const TextStyle(color: Colors.red, fontSize: 14.5),
+                decoration: InputDecoration(
+                    errorStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
                     ),
-                    Text("Dia del Servicio"),
-                  ],
-                ),
+                    prefixIconConstraints: const BoxConstraints(minWidth: 45),
+                    prefixIcon: const Icon(
+                      Icons.calendar_today,
+                      color: Colors.red,
+                      size: 22,
+                    ),
+                    border: InputBorder.none,
+                    hintText: "Seleccionar fecha",
+                    hintStyle:
+                        const TextStyle(color: Colors.red, fontSize: 14.5),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100)
+                            .copyWith(bottomRight: const Radius.circular(0)),
+                        borderSide: const BorderSide(color: Colors.white38)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100)
+                            .copyWith(bottomRight: const Radius.circular(0)),
+                        borderSide: const BorderSide(color: Colors.red))),
               ),
             ),
+            //Fecha
             const SizedBox(
               height: 40,
             ),
@@ -137,8 +161,23 @@ class _HogarState extends State<Hogar> {
             GestureDetector(
               onTap: () async {
                 if (formkey.currentState!.validate()) {
-                  final String orig = origen.text.trim();
-                  final String dest = numeroController.text.trim();
+                  final String dest = destino.text.trim();
+                  final String date = DateFormat.yMd().format(selectedDate);
+                  final _servicioDoc =
+                      FirebaseFirestore.instance.collection('servicio').doc();
+                  final servicio = Servicio(
+                      id: _servicioDoc.id,
+                      destino: dest,
+                      tipo: widget.title,
+                      fecha: date);
+                  await _servicioDoc
+                      .set(servicio.regularJson())
+                      .whenComplete(() {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Se ha registrado su agenda')));
+                    destino.text = "";
+                    fecha.text = "";
+                  });
                 }
               },
               child: Container(
@@ -179,19 +218,20 @@ class _HogarState extends State<Hogar> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(1970),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2025),
-      helpText: "SELECCIONE FECHA DE NACIMIENTO",
+      helpText: "SELECCIONE FECHA DEL SERVICIO",
       cancelText: "CANCELAR",
       confirmText: "AGREGAR",
       fieldHintText: "dd/mm/yy",
-      fieldLabelText: "FECHA DE NACIMIENTO",
+      fieldLabelText: "FECHA DEL SERVICIO",
       errorFormatText: "Introducir fomato correcto ej. 19/02/97",
       errorInvalidText: "Error en los datos Fecha fuera de rango",
     );
-    if (selected != null && selected != selectedDate) {
+    if (selected != null) {
       setState(() {
         selectedDate = selected;
+        fecha.text = DateFormat.yMMMMEEEEd('es').format(selectedDate);
       });
     }
   }

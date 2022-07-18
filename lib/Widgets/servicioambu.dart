@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_app/Screen/avisos.dart';
+
+import '../Models/servicio.dart';
 
 class ServicioAmbulancia extends StatefulWidget {
   const ServicioAmbulancia({Key? key}) : super(key: key);
@@ -15,21 +18,12 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
 
   final formkey = GlobalKey<FormState>();
 
-  bool isPasswordVisible = false;
-  bool isConfirmPasswordVisible = false;
-
   final origen = TextEditingController();
-  final direccionController = TextEditingController();
-  final correoController = TextEditingController();
-  final contraController = TextEditingController();
-  final contracController = TextEditingController();
-  final numeroController = TextEditingController();
+  final destino = TextEditingController();
+  final fecha = TextEditingController();
 
-  String? sangre = "A+";
-  List<String> listSangre = ["A+", "A-", "O+", "O-", "AB+", "AB-", "B+", "B-"];
-
-  final CollectionReference _servicios =
-      FirebaseFirestore.instance.collection('servicio');
+  String? oxigeno = "SI";
+  List<String> listOxigeno = ["SI", "NO "];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,7 +139,7 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
                       return null;
                     }
                   },
-                  controller: numeroController,
+                  controller: destino,
                   keyboardType: TextInputType.text,
                   style: const TextStyle(color: Colors.red, fontSize: 14.5),
                   decoration: InputDecoration(
@@ -173,22 +167,82 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
                           borderSide: const BorderSide(color: Colors.red))),
                 ),
               ),
+              //Fecha
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30)
                     .copyWith(bottom: 10),
-                child: ElevatedButton(
-                  onPressed: () {
+                child: TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Poner DOMICILIO NO VACIO";
+                    } else {
+                      return null;
+                    }
+                  },
+                  onTap: () async {
                     _selectDate(context);
                   },
-                  child: Row(
-                    children: const [
-                      Icon(Icons.date_range),
-                      SizedBox(
-                        width: 8,
+                  readOnly: true,
+                  controller: fecha,
+                  keyboardType: TextInputType.text,
+                  style: const TextStyle(color: Colors.red, fontSize: 14.5),
+                  decoration: InputDecoration(
+                      errorStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
                       ),
-                      Text("Dia del Servicio"),
-                    ],
-                  ),
+                      prefixIconConstraints: const BoxConstraints(minWidth: 45),
+                      prefixIcon: const Icon(
+                        Icons.calendar_today,
+                        color: Colors.red,
+                        size: 22,
+                      ),
+                      border: InputBorder.none,
+                      hintText: "Seleccionar fecha",
+                      hintStyle:
+                          const TextStyle(color: Colors.red, fontSize: 14.5),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100)
+                              .copyWith(bottomRight: const Radius.circular(0)),
+                          borderSide: const BorderSide(color: Colors.white38)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100)
+                              .copyWith(bottomRight: const Radius.circular(0)),
+                          borderSide: const BorderSide(color: Colors.red))),
+                ),
+              ),
+              //Oxigeno
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40)
+                    .copyWith(bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Requiere oxígeno",
+                      style: TextStyle(color: Colors.red, fontSize: 14.5),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                        elevation: 15,
+                        icon: const Icon(
+                          Icons.medical_information,
+                          color: Colors.red,
+                        ),
+                        style:
+                            const TextStyle(color: Colors.red, fontSize: 14.5),
+                        dropdownColor: Colors.white,
+                        value: oxigeno,
+                        items: listOxigeno
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(item),
+                                ))
+                            .toList(),
+                        onChanged: (item) => setState(() => oxigeno = item)),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -199,7 +253,27 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
                 onTap: () async {
                   if (formkey.currentState!.validate()) {
                     final String orig = origen.text.trim();
-                    final String dest = numeroController.text.trim();
+                    final String dest = destino.text.trim();
+                    final String date = DateFormat.yMd().format(selectedDate);
+                    final _servicioDoc =
+                        FirebaseFirestore.instance.collection('servicio').doc();
+                    final servicio = Servicio(
+                        id: _servicioDoc.id,
+                        origen: orig,
+                        destino: dest,
+                        tipo: "Traslado",
+                        fecha: date,
+                        oxigeno: oxigeno);
+                    await _servicioDoc
+                        .set(servicio.ambulanciaJson())
+                        .whenComplete(() {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Se ha registrado su agenda')));
+
+                      origen.text = "";
+                      destino.text = "";
+                      fecha.text = "";
+                    });
                   }
                 },
                 child: Container(
@@ -241,19 +315,20 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(1970),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2025),
-      helpText: "SELECCIONE FECHA DE NACIMIENTO",
+      helpText: "SELECCIONE FECHA DE SERVICIO",
       cancelText: "CANCELAR",
       confirmText: "AGREGAR",
       fieldHintText: "dd/mm/yy",
-      fieldLabelText: "FECHA DE NACIMIENTO",
+      fieldLabelText: "FECHA DE SERVICIO",
       errorFormatText: "Introducir fomato correcto ej. 19/02/97",
       errorInvalidText: "Error en los datos Fecha fuera de rango",
     );
-    if (selected != null && selected != selectedDate) {
+    if (selected != null) {
       setState(() {
         selectedDate = selected;
+        fecha.text = DateFormat.yMMMMEEEEd('es').format(selectedDate);
       });
     }
   }

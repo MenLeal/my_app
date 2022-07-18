@@ -30,8 +30,8 @@ class Paciente {
       required this.numref,
       required this.contacto,
       required this.numcontacto,
-      this.domcontacto,
-      this.fechanacimiento});
+      required this.domcontacto,
+      required this.fechanacimiento});
   Map<String, dynamic> toJson() => {
         'id': id,
         "nombre": nombre,
@@ -50,4 +50,21 @@ class Paciente {
         "domcontacto": domcontacto,
         "fechanacimiento": fechanacimiento
       };
+  static Paciente fromJson(Map<String, dynamic> json) => Paciente(
+      id: json['id'],
+      nombre: json['nombre'],
+      numero: json['numero'],
+      direccion: json['domicilio'],
+      correo: json['correo'],
+      contra: json['contra'],
+      curp: json['curp'],
+      sangre: json['sangre'],
+      padecimientos: json['padecimiento'],
+      serviciopublico: json['serviciopublico'],
+      numref: json['numref'],
+      alergias: json['alergias'],
+      contacto: json['contacto'],
+      numcontacto: json['numcontacto'],
+      domcontacto: json['domcontacto'],
+      fechanacimiento: json['fechanacimiento']);
 }

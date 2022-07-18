@@ -1,12 +1,12 @@
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:my_app/Models/servicio.dart';
 
 class Delegacion extends StatefulWidget {
-  const Delegacion({Key? key}) : super(key: key);
+  const Delegacion({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
   State<Delegacion> createState() => _DelegacionState();
@@ -18,21 +18,8 @@ class _DelegacionState extends State<Delegacion> {
 
   final formkey = GlobalKey<FormState>();
 
-  bool isPasswordVisible = false;
-  bool isConfirmPasswordVisible = false;
-
   final origen = TextEditingController();
-  final direccionController = TextEditingController();
-  final correoController = TextEditingController();
-  final contraController = TextEditingController();
-  final contracController = TextEditingController();
   TextEditingController fecha = TextEditingController();
-
-  String? sangre = "A+";
-  List<String> listSangre = ["A+", "A-", "O+", "O-", "AB+", "AB-", "B+", "B-"];
-
-  final CollectionReference _servicios =
-      FirebaseFirestore.instance.collection('servicio');
 
   @override
   void initState() {
@@ -137,7 +124,21 @@ class _DelegacionState extends State<Delegacion> {
             GestureDetector(
               onTap: () async {
                 if (formkey.currentState!.validate()) {
-                  final String fecha = DateFormat.yMd().format(selectedDate);
+                  final String date = DateFormat.yMd().format(selectedDate);
+                  final _servicioDoc =
+                      FirebaseFirestore.instance.collection('servicio').doc();
+                  final servicio = Servicio(
+                      id: _servicioDoc.id,
+                      destino: "delegacion",
+                      tipo: widget.title,
+                      fecha: date);
+                  await _servicioDoc
+                      .set(servicio.regularJson())
+                      .whenComplete(() {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Se ha registrado su agenda')));
+                    fecha.text = "";
+                  });
                 }
               },
               child: Container(

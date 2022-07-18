@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/Screen/inicioadmin.dart';
 import 'package:my_app/registro.dart';
 import '/Screen/avisos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +51,7 @@ class _InicioPagState extends State<InicioPag> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
-                              "images/cruzroja.png",
+                              "images/logogeneral.png",
                               width: 102,
                               alignment: Alignment.center,
                             ),
@@ -216,7 +217,7 @@ class _InicioPagState extends State<InicioPag> {
                     ),
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 30,
                   ),
                   const Text('¿No tiene una cuenta?',
                       style: TextStyle(color: Colors.white70, fontSize: 13)),
@@ -249,8 +250,37 @@ class _InicioPagState extends State<InicioPag> {
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
-                  )
+                    height: 10,
+                  ),
+                  Container(
+                    height: 23,
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 30),
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                        onTap: (() {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const InicioAdmin(),
+                            ),
+                          );
+                        }),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('Admin',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: Colors.white.withOpacity(.8),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold)),
+                            const Icon(
+                              Icons.admin_panel_settings,
+                              color: Colors.white,
+                            ),
+                          ],
+                        )),
+                  ),
                 ],
               ),
             ),

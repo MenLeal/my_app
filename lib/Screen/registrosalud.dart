@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/Models/paciente.dart';
 import '/Screen/iniciosesion.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -529,25 +530,25 @@ class _SaludDatosState extends State<SaludDatos> {
                                   email: widget.correo.toString(),
                                   password: widget.contra.toString())
                               .whenComplete(() async {
-                            await _usuarios
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .set({
-                              "nombre": widget.nombre,
-                              "numero": widget.numero,
-                              "domicilio": widget.direccion,
-                              "correo": widget.correo,
-                              "contra": widget.contra,
-                              "curp": curp,
-                              "sangre": sangre,
-                              "padecimiento": padecimiento,
-                              "serviciopublico": numss,
-                              "numref": numeroref,
-                              "alergias": alergias,
-                              "contacto": contacto,
-                              "numcontacto": numcontacto,
-                              "domcontacto": domiciliocontacto,
-                              "fechanacimiento": fecha,
-                            });
+                            final uid = FirebaseAuth.instance.currentUser!.uid;
+                            final paciente = Paciente(
+                                id: uid,
+                                nombre: widget.nombre,
+                                direccion: widget.direccion,
+                                correo: widget.correo,
+                                numero: widget.numero,
+                                contra: widget.contra,
+                                curp: curp,
+                                alergias: alergias,
+                                padecimientos: padecimiento,
+                                sangre: sangre,
+                                serviciopublico: numss,
+                                numref: numeroref,
+                                contacto: contacto,
+                                numcontacto: numcontacto,
+                                domcontacto: domiciliocontacto,
+                                fechanacimiento: fecha);
+                            await _usuarios.doc(uid).set(paciente.toJson());
                             curpController.text = "";
                             alergiasController.text = "";
                             numerossController.text = "";

@@ -1,7 +1,5 @@
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/Screen/avisos.dart';
 import 'package:my_app/Widgets/serviciodeleg.dart';
@@ -16,26 +14,6 @@ class ServicioRegular extends StatefulWidget {
 }
 
 class _ServicioRegularState extends State<ServicioRegular> {
-  String date = "";
-  DateTime selectedDate = DateTime.now();
-
-  final formkey = GlobalKey<FormState>();
-
-  bool isPasswordVisible = false;
-  bool isConfirmPasswordVisible = false;
-
-  final origen = TextEditingController();
-  final direccionController = TextEditingController();
-  final correoController = TextEditingController();
-  final contraController = TextEditingController();
-  final contracController = TextEditingController();
-  final numeroController = TextEditingController();
-
-  String? sangre = "A+";
-  List<String> listSangre = ["A+", "A-", "O+", "O-", "AB+", "AB-", "B+", "B-"];
-
-  final CollectionReference _servicios =
-      FirebaseFirestore.instance.collection('servicio');
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -67,7 +45,12 @@ class _ServicioRegularState extends State<ServicioRegular> {
               ),
             ]),
           ),
-          body: const TabBarView(children: [Hogar(), Delegacion()])),
+          body: TabBarView(children: [
+            Hogar(
+              title: widget.title,
+            ),
+            Delegacion(title: widget.title)
+          ])),
     );
   }
 }

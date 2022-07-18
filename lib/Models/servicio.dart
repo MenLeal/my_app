@@ -1,3 +1,5 @@
+import 'package:my_app/Models/paciente.dart';
+
 class Servicio {
   String? id;
   String? destino;
@@ -7,7 +9,8 @@ class Servicio {
   String? oxigeno;
 
   Servicio(
-      {required this.destino,
+      {this.id,
+      required this.destino,
       this.origen,
       required this.tipo,
       required this.fecha,
@@ -27,4 +30,10 @@ class Servicio {
         "tipo": tipo,
         "oxigeno": oxigeno
       };
+
+  static Servicio fromJsonReg(Map<String, dynamic> json) => Servicio(
+      id: json['id'],
+      destino: json['destino'],
+      tipo: json['tipo'],
+      fecha: json['fecha']);
 }

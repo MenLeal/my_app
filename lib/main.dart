@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/Providers/notification.dart';
 import 'package:my_app/Screen/adminpanel.dart';
 import 'Screen/iniciosesion.dart';
 import 'Screen/avisos.dart';
@@ -15,6 +16,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final providerNotification = PushNotificationProvider();
+  providerNotification.initNotifications();
   runApp(MaterialApp(
       title: 'AlarmApp',
       debugShowCheckedModeBanner: false,
@@ -24,6 +27,7 @@ void main() async {
               ? const AdminPanel()
               : const AvisosPage()
           : const InicioPag(),
+          
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

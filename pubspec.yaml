@@ -44,7 +44,7 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_localizations:
     sdk: flutter 
-
+  firebase_messaging: ^12.0.1
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +62,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "images/cruzroja.png"
+  image_path: "images/logogeneral.png"
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -86,6 +86,8 @@ flutter:
       - images/consulta.png
       - images/vacuna.png
       - images/logogeneral.png
+      - images/ambugeneral.png
+
 
 
 

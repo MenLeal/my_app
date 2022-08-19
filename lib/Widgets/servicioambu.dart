@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/Screen/avisos.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/servicio.dart';
 
@@ -30,7 +31,9 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
       appBar: AppBar(
         title: const Text("Traslado"),
         leading: InkWell(
-          onTap: () {
+          onTap: () async {
+            final prefs = await SharedPreferences.getInstance();
+            prefs.setInt('page', 1);
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const AvisosPage(),

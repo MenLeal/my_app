@@ -1,5 +1,3 @@
-import 'package:my_app/Models/paciente.dart';
-
 class Servicio {
   String? id;
   String? destino;
@@ -7,6 +5,7 @@ class Servicio {
   String? fecha;
   String? tipo;
   String? oxigeno;
+  String? estado;
 
   Servicio(
       {this.id,
@@ -14,13 +13,15 @@ class Servicio {
       this.origen,
       required this.tipo,
       required this.fecha,
-      this.oxigeno});
+      this.oxigeno,
+      this.estado});
 
   Map<String, dynamic> regularJson() => {
         "id": id,
         "destino": destino,
         "fecha": fecha,
         "tipo": tipo,
+        "estado": estado,
       };
   Map<String, dynamic> ambulanciaJson() => {
         "id": id,
@@ -28,12 +29,26 @@ class Servicio {
         "origen": origen,
         "fecha": fecha,
         "tipo": tipo,
-        "oxigeno": oxigeno
+        "oxigeno": oxigeno,
+        "estado": estado
       };
 
   static Servicio fromJsonReg(Map<String, dynamic> json) => Servicio(
-      id: json['id'],
-      destino: json['destino'],
-      tipo: json['tipo'],
-      fecha: json['fecha']);
+        id: json['id'],
+        destino: json['destino'],
+        origen: json['origen'],
+        tipo: json['tipo'],
+        fecha: json['fecha'],
+        estado: json['estado'],
+      );
+
+  static Servicio fromJsonAmb(Map<String, dynamic> json) => Servicio(
+        id: json['id'],
+        destino: json['destino'],
+        tipo: json['tipo'],
+        fecha: json['fecha'],
+        oxigeno: json['oxigeno'],
+        estado: json['estado'],
+        origen: json['origen'],
+      );
 }

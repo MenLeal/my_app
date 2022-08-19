@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:my_app/Models/servicio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -21,59 +20,21 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
 
-  final fecha = TextEditingController();
-  final destino = TextEditingController();
+  final nombre = TextEditingController();
+  final correo = TextEditingController();
+  final contra = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Nuevo Cabinero"),
+        title: const Text("Nuevo Cabinero"),
       ),
       body: SingleChildScrollView(
         child: Form(
           key: formkey,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30)
-                    .copyWith(top: 10),
-                child: Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.info_outline,
-                              color: Colors.redAccent,
-                            ),
-                            Text(
-                              " Costo de Recuperación",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.red),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          "Todo servicio brindado requiere de una aportación voluntaria para poder ayudarle con las mejores condiciones",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300, fontSize: 15),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
               //Destino
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30)
@@ -81,12 +42,12 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
                 child: TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Poner DOMICILIO NO VACIO";
+                      return "Poner Nombre NO VACIO";
                     } else {
                       return null;
                     }
                   },
-                  controller: destino,
+                  controller: nombre,
                   keyboardType: TextInputType.text,
                   style: const TextStyle(color: Colors.red, fontSize: 14.5),
                   decoration: InputDecoration(
@@ -96,12 +57,12 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
                       ),
                       prefixIconConstraints: const BoxConstraints(minWidth: 45),
                       prefixIcon: const Icon(
-                        Icons.home,
+                        Icons.person,
                         color: Colors.red,
                         size: 22,
                       ),
                       border: InputBorder.none,
-                      hintText: 'Donde te atenderemos',
+                      hintText: 'Nombre Completo',
                       hintStyle:
                           const TextStyle(color: Colors.red, fontSize: 14.5),
                       enabledBorder: OutlineInputBorder(
@@ -114,22 +75,20 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
                           borderSide: const BorderSide(color: Colors.red))),
                 ),
               ),
-              Padding(
+                Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30)
-                    .copyWith(bottom: 10),
+                    .copyWith(top: 10, bottom: 10),
                 child: TextFormField(
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Poner DOMICILIO NO VACIO";
+                     if (value!.isEmpty ||
+                        !RegExp(r'^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9])+(\.[a-zA-Z0-9_-]+)+$')
+                            .hasMatch(value)) {
+                      return "Poner CORREO correcto";
                     } else {
                       return null;
                     }
                   },
-                  onTap: () async {
-                    _selectDate(context);
-                  },
-                  readOnly: true,
-                  controller: fecha,
+                  controller: correo,
                   keyboardType: TextInputType.text,
                   style: const TextStyle(color: Colors.red, fontSize: 14.5),
                   decoration: InputDecoration(
@@ -139,12 +98,12 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
                       ),
                       prefixIconConstraints: const BoxConstraints(minWidth: 45),
                       prefixIcon: const Icon(
-                        Icons.calendar_today,
+                        Icons.email,
                         color: Colors.red,
                         size: 22,
                       ),
                       border: InputBorder.none,
-                      hintText: "Seleccionar fecha",
+                      hintText: 'correo@ejemplo.com',
                       hintStyle:
                           const TextStyle(color: Colors.red, fontSize: 14.5),
                       enabledBorder: OutlineInputBorder(
@@ -165,7 +124,7 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
               GestureDetector(
                 onTap: () async {
                   if (formkey.currentState!.validate()) {
-                    final String dest = destino.text.trim();
+                    final String dest = nombre.text.trim();
                     final String date = DateFormat.yMd().format(selectedDate);
                     final _servicioDoc =
                         FirebaseFirestore.instance.collection('servicio').doc();
@@ -179,8 +138,8 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
                         .whenComplete(() {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Se ha registrado su agenda')));
-                      destino.text = "";
-                      fecha.text = "";
+                      nombre.text = "";
+                      contra.text = "";
                     });
                   }
                 },
@@ -217,27 +176,5 @@ class _AgregarCabineroState extends State<AgregarCabinero> {
         ),
       ),
     );
-  }
-
-  _selectDate(BuildContext context) async {
-    final DateTime? selected = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2025),
-      helpText: "SELECCIONE FECHA DEL SERVICIO",
-      cancelText: "CANCELAR",
-      confirmText: "AGREGAR",
-      fieldHintText: "dd/mm/yy",
-      fieldLabelText: "FECHA DEL SERVICIO",
-      errorFormatText: "Introducir fomato correcto ej. 19/02/97",
-      errorInvalidText: "Error en los datos Fecha fuera de rango",
-    );
-    if (selected != null) {
-      setState(() {
-        selectedDate = selected;
-        fecha.text = DateFormat.yMMMMEEEEd('es').format(selectedDate);
-      });
-    }
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_app/Models/alerta.dart';
+import 'package:my_app/Screen/servicio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BotonEmergencia extends StatefulWidget {
@@ -24,8 +26,9 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _position = position;
-      uid = prefs.getString("uid");
     });
+    uid = prefs.getString("uid");
+    prefs.setInt('page', 0);
   }
 
   Future<Position> _determinePosition() async {
@@ -51,12 +54,17 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
-            return const AlertDialog(
-              content: Text(
+            return AlertDialog(
+              content: const Text(
                   "MANTENER PRESIONADO el botón para enviar alerta a la central. A continuación se le hará una llamada para confirmar la emergencia"),
-              title: Text(
-                'Enviar Alerta',
-                style: TextStyle(color: Colors.red),
+              title: Row(
+                children: const [
+                  Icon(Icons.send_outlined, color: Colors.red),
+                  Text(
+                    ' Enviar Alerta',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ],
               ),
             );
           });
@@ -65,8 +73,8 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
 
   @override
   void initState() {
-    getLocation();
     super.initState();
+    getLocation();
   }
 
   @override
@@ -95,20 +103,24 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
               shape: const CircleBorder(),
               onLongPress: () async {
                 getLocation();
-                await _alertas.add({
-                  "uid": uid,
-                  "latitud": _position!.latitude.toString(),
-                  "longitud": _position!.longitude.toString(),
-                  "fechahora":
-                      DateFormat('d/M/y').add_jm().format(DateTime.now()),
-                }).whenComplete(() {
+                final _alertaDoc =
+                    FirebaseFirestore.instance.collection('alertas').doc();
+                final alerta = Alerta(
+                    id: _alertaDoc.id,
+                    uid: uid,
+                    fechahora:
+                        DateFormat('d/M/y').add_jm().format(DateTime.now()),
+                    latitud: _position!.latitude.toString(),
+                    longitud: _position!.longitude.toString(),
+                    estado: "pendiente");
+                await _alertaDoc.set(alerta.toJson()).whenComplete(() {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Se ha enviado la alerta')));
                 });
               },
               child: Padding(
                 padding: const EdgeInsets.all(0),
-                child: Image.asset("images/cruzbutton.png"),
+                child: Image.asset("images/logogeneral.png"),
               ),
             )));
   }

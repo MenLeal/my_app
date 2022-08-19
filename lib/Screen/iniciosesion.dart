@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/Models/paciente.dart';
 import 'package:my_app/Screen/inicioadmin.dart';
 import 'package:my_app/registro.dart';
 import '/Screen/avisos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InicioPag extends StatefulWidget {
   const InicioPag({Key? key}) : super(key: key);
@@ -59,7 +61,7 @@ class _InicioPagState extends State<InicioPag> {
                               height: 15,
                             ),
                             const Text(
-                              'AlarmApp ',
+                              'Urgencias ',
                               style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
@@ -299,8 +301,16 @@ class _InicioPagState extends State<InicioPag> {
           .whenComplete(() async {
         final prefs = await SharedPreferences.getInstance();
         final uid = FirebaseAuth.instance.currentUser!.uid;
+        final pacienteDoc =
+            FirebaseFirestore.instance.collection('pacientes').doc(uid);
+        final pacienteData = await pacienteDoc.get();
+        final paciente = Paciente.fromJson(pacienteData.data()!);
         prefs.setString('uid', uid);
         prefs.setBool("login", true);
+        prefs.setString("nombre", paciente.nombre.toString());
+        prefs.setString("direccion", paciente.direccion.toString());
+        prefs.setString("numero", paciente.numero.toString());
+        prefs.setString("correo", paciente.correo.toString());
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const AvisosPage(),

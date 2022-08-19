@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/Models/paciente.dart';
+import 'package:my_app/Screen/emailverif.dart';
 import '/Screen/iniciosesion.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -101,7 +102,7 @@ class _SaludDatosState extends State<SaludDatos> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
-                              "images/cruzroja.png",
+                              "images/logogeneral.png",
                               width: 102,
                               alignment: Alignment.center,
                             ),
@@ -561,7 +562,7 @@ class _SaludDatosState extends State<SaludDatos> {
                                         'Se ha añadido el usuario correctamente')));
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => const InicioPag(),
+                                builder: (context) => const EmailVerification(),
                               ),
                             );
                           });

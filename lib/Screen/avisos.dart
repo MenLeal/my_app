@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/Screen/botonemergencia.dart';
 import '/Screen/edituser.dart';
 import '/Screen/servicios.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AvisosPage extends StatefulWidget {
   const AvisosPage({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class AvisosPage extends StatefulWidget {
 }
 
 class _AvisosPageState extends State<AvisosPage> {
+  int? pageBack;
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
@@ -18,6 +20,32 @@ class _AvisosPageState extends State<AvisosPage> {
     ServiciosPage(),
     EditarUser()
   ];
+  void getPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedIndex = prefs.getInt('page')!;
+    });
+  }
+
+  void setPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setInt('page', 0);
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    setPrefs();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    getPrefs();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

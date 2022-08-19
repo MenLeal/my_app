@@ -93,7 +93,7 @@ class _RegistroPagState extends State<RegistroPag> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
-                              "images/cruzroja.png",
+                              "images/logogeneral.png",
                               width: 102,
                               alignment: Alignment.center,
                             ),

@@ -281,6 +281,8 @@ class _InicioAdminState extends State<InicioAdmin> {
           prefs.setString('uid', uid);
           prefs.setBool("login", true);
           prefs.setString("tipo", admin.tipo.toString());
+          prefs.setString("nombre", admin.nombre.toString());
+          
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const AdminPanel(),

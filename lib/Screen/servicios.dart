@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/Screen/emailverif.dart';
+import 'package:my_app/Screen/retropage.dart';
 import 'package:my_app/Screen/servicio.dart';
 
 class ServiciosPage extends StatefulWidget {
@@ -16,6 +18,18 @@ class _ServiciosPageState extends State<ServiciosPage> {
         title: const Text("Servicios"),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const EmailVerification(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.message)
+          ),
+        ],
       ),
       body: GridView(
         padding: const EdgeInsets.all(8),
@@ -26,7 +40,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Traslado"),
+                  builder: (context) => const Servicio(title: "Traslado"),
                 ),
               );
             },
@@ -37,7 +51,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "images/ambulancia.jpg",
+                    "images/ambugeneral.png",
                     width: 150,
                     height: 90,
                   ),
@@ -54,7 +68,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Prueba COVID"),
+                  builder: (context) => const Servicio(title: "Prueba COVID"),
                 ),
               );
             },
@@ -102,7 +116,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) =>
-                      Servicio(title: "Toma electrocardiograma"),
+                      const Servicio(title: "Toma electrocardiograma"),
                 ),
               );
             },
@@ -133,7 +147,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Prueba de Dengue"),
+                  builder: (context) => const Servicio(title: "Prueba de Dengue"),
                 ),
               );
             },
@@ -164,7 +178,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Certificado Médico"),
+                  builder: (context) => const Servicio(title: "Certificado Médico"),
                 ),
               );
             },
@@ -195,7 +209,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Curación"),
+                  builder: (context) => const Servicio(title: "Curación"),
                 ),
               );
             },
@@ -226,7 +240,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Sutura"),
+                  builder: (context) => const Servicio(title: "Sutura"),
                 ),
               );
             },
@@ -258,7 +272,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) =>
-                      Servicio(title: "Toma de signos vitales"),
+                      const Servicio(title: "Toma de signos vitales"),
                 ),
               );
             },
@@ -289,7 +303,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Toma de glucosa"),
+                  builder: (context) => const Servicio(title: "Toma de glucosa"),
                 ),
               );
             },
@@ -318,7 +332,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) =>
-                      Servicio(title: "Recambio de sondas urinarias"),
+                      const Servicio(title: "Recambio de sondas urinarias"),
                 ),
               );
             },
@@ -350,7 +364,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) =>
-                      Servicio(title: "Consulta Médica General"),
+                      const Servicio(title: "Consulta Médica General"),
                 ),
               );
             },
@@ -381,7 +395,7 @@ class _ServiciosPageState extends State<ServiciosPage> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Servicio(title: "Inyección"),
+                  builder: (context) => const Servicio(title: "Inyección"),
                 ),
               );
             },

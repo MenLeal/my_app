@@ -13,6 +13,8 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   var login = prefs.getBool("login");
   var tipo = prefs.getString("tipo");
+  var emailverif = prefs.getBool("emailverif");
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -22,12 +24,11 @@ void main() async {
       title: 'AlarmApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.red),
-      home: login == true
+      home: login == true && emailverif == true
           ? tipo == '2'
               ? const AdminPanel()
               : const AvisosPage()
           : const InicioPag(),
-          
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

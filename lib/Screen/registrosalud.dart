@@ -526,48 +526,54 @@ class _SaludDatosState extends State<SaludDatos> {
                         final String fecha = curp.substring(4, 10);
                         if (numcontacto.length.isFinite &&
                             numcontacto.length == 10) {
-                          FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: widget.correo.toString(),
-                                  password: widget.contra.toString())
-                              .whenComplete(() async {
-                            final uid = FirebaseAuth.instance.currentUser!.uid;
-                            final paciente = Paciente(
-                                id: uid,
-                                nombre: widget.nombre,
-                                direccion: widget.direccion,
-                                correo: widget.correo,
-                                numero: widget.numero,
-                                contra: widget.contra,
-                                curp: curp,
-                                alergias: alergias,
-                                padecimientos: padecimiento,
-                                sangre: sangre,
-                                serviciopublico: numss,
-                                numref: numeroref,
-                                contacto: contacto,
-                                numcontacto: numcontacto,
-                                domcontacto: domiciliocontacto,
-                                fechanacimiento: fecha);
-                            await _usuarios.doc(uid).set(paciente.toJson());
-                            curpController.text = "";
-                            alergiasController.text = "";
-                            numerossController.text = "";
-                            numerocontactoController.text = "";
-                            direccionController.text = "";
-                            nombreccontroller.text = "";
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Se ha añadido el usuario correctamente')));
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => EmailVerification(
+                          try {
+                            FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                    email: widget.correo.toString(),
+                                    password: widget.contra.toString())
+                                .whenComplete(() async {
+                              final uid =
+                                  FirebaseAuth.instance.currentUser!.uid;
+                              final paciente = Paciente(
+                                  id: uid,
+                                  nombre: widget.nombre,
+                                  direccion: widget.direccion,
                                   correo: widget.correo,
+                                  numero: widget.numero,
+                                  contra: widget.contra,
+                                  curp: curp,
+                                  alergias: alergias,
+                                  padecimientos: padecimiento,
+                                  sangre: sangre,
+                                  serviciopublico: numss,
+                                  numref: numeroref,
+                                  contacto: contacto,
+                                  numcontacto: numcontacto,
+                                  domcontacto: domiciliocontacto,
+                                  fechanacimiento: fecha);
+                              await _usuarios.doc(uid).set(paciente.toJson());
+                              curpController.text = "";
+                              alergiasController.text = "";
+                              numerossController.text = "";
+                              numerocontactoController.text = "";
+                              direccionController.text = "";
+                              nombreccontroller.text = "";
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Se ha añadido el usuario correctamente')));
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => EmailVerification(
+                                    correo: widget.correo,
+                                  ),
                                 ),
-                              ),
-                            );
-                          });
+                              );
+                            });
+                          } on FirebaseAuthException catch (e) {
+                            print('Failed with error code: ${e.code}');
+                            print(e.message);
+                          }
                         }
                       }
                     },

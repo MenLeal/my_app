@@ -54,7 +54,10 @@ class _EmailVerificationState extends State<EmailVerification> {
   Widget build(BuildContext context) => isEmailVerified
       ? const AvisosPage()
       : Scaffold(
-          appBar: AppBar(title: const Text("Verificar Correo")),
+          appBar: AppBar(
+            title: const Text("Verificar Correo"),
+            automaticallyImplyLeading: false,
+          ),
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -87,13 +90,15 @@ class _EmailVerificationState extends State<EmailVerification> {
 
   void resendEmail() {}
   Future checkEmailVerified() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool("emailverif", true);
     await FirebaseAuth.instance.currentUser!.reload();
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
-
+    if (isEmailVerified == true) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool("emailverif", true);
+      prefs.setBool("login", true);
+    }
     if (isEmailVerified) timer?.cancel();
   }
 }

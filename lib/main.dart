@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/Providers/notification.dart';
 import 'package:my_app/Screen/adminpanel.dart';
+import 'Screen/emailverif.dart';
 import 'Screen/iniciosesion.dart';
 import 'Screen/avisos.dart';
 import 'firebase_options.dart';
@@ -28,7 +29,7 @@ void main() async {
           ? tipo == '2'
               ? const AdminPanel()
               : const AvisosPage()
-          : const InicioPag(),
+          : login == true ? const EmailVerification() : const InicioPag(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

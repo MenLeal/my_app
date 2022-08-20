@@ -29,9 +29,7 @@ class _AvisosPageState extends State<AvisosPage> {
 
   void setPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      prefs.setInt('page', 0);
-    });
+    prefs.setInt('page', 0);
   }
 
   @override

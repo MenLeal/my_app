@@ -296,27 +296,32 @@ class _InicioPagState extends State<InicioPag> {
     if (formkey.currentState!.validate()) {
       final String correo = correoController.text.trim();
       final String contra = contraController.text.trim();
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: correo, password: contra)
-          .whenComplete(() async {
-        final prefs = await SharedPreferences.getInstance();
-        final uid = FirebaseAuth.instance.currentUser!.uid;
-        final pacienteDoc =
-            FirebaseFirestore.instance.collection('pacientes').doc(uid);
-        final pacienteData = await pacienteDoc.get();
-        final paciente = Paciente.fromJson(pacienteData.data()!);
-        prefs.setString('uid', uid);
-        prefs.setBool("login", true);
-        prefs.setString("nombre", paciente.nombre.toString());
-        prefs.setString("direccion", paciente.direccion.toString());
-        prefs.setString("numero", paciente.numero.toString());
-        prefs.setString("correo", paciente.correo.toString());
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const AvisosPage(),
-          ),
-        );
-      });
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: correo, password: contra)
+            .whenComplete(() async {
+          final prefs = await SharedPreferences.getInstance();
+          final uid = FirebaseAuth.instance.currentUser!.uid;
+          final pacienteDoc =
+              FirebaseFirestore.instance.collection('pacientes').doc(uid);
+          final pacienteData = await pacienteDoc.get();
+          final paciente = Paciente.fromJson(pacienteData.data()!);
+          prefs.setString('uid', uid);
+          prefs.setBool("login", true);
+          prefs.setString("nombre", paciente.nombre.toString());
+          prefs.setString("direccion", paciente.direccion.toString());
+          prefs.setString("numero", paciente.numero.toString());
+          prefs.setString("correo", paciente.correo.toString());
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const AvisosPage(),
+            ),
+          );
+        });
+      } on FirebaseAuthException catch (e) {
+        print('Failed with error code: ${e.code}');
+        print(e.message);
+      }
     }
   }
 }

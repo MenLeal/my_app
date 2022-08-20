@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/Screen/avisos.dart';
 import 'package:my_app/Widgets/serviciodeleg.dart';
 import 'package:my_app/Widgets/serviciohogar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ServicioRegular extends StatefulWidget {
   const ServicioRegular({Key? key, this.title}) : super(key: key);
@@ -22,7 +23,9 @@ class _ServicioRegularState extends State<ServicioRegular> {
           appBar: AppBar(
             title: Text(widget.title!),
             leading: InkWell(
-              onTap: () {
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setInt('page', 1);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => const AvisosPage(),

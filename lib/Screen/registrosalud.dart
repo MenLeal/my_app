@@ -136,7 +136,7 @@ class _SaludDatosState extends State<SaludDatos> {
                         if (value!.isEmpty ||
                             value.length < 18 ||
                             value.length > 18) {
-                          return "Poner CURP VÁLIDO de 18 DÍGITOS";
+                          return "Introuduce un CURP VÁLIDO de 18 DÍGITOS";
                         } else {
                           return null;
                         }
@@ -382,7 +382,7 @@ class _SaludDatosState extends State<SaludDatos> {
                         if (value!.isEmpty ||
                             value.length < 10 ||
                             value.length > 10) {
-                          return "Poner CELULAR VÁLIDO de 10 DÍGITOS";
+                          return "Introuduce un CELULAR VÁLIDO de 10 DÍGITOS";
                         } else {
                           return null;
                         }
@@ -426,7 +426,7 @@ class _SaludDatosState extends State<SaludDatos> {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Poner NOMBRE correcto";
+                          return "Introuduce un NOMBRE correcto";
                         } else {
                           return null;
                         }
@@ -470,7 +470,7 @@ class _SaludDatosState extends State<SaludDatos> {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Poner un DOMICILIO VÁLIDO";
+                          return "Introuduce un DOMICILIO VÁLIDO";
                         } else {
                           return null;
                         }
@@ -562,7 +562,9 @@ class _SaludDatosState extends State<SaludDatos> {
                                         'Se ha añadido el usuario correctamente')));
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => const EmailVerification(),
+                                builder: (context) => EmailVerification(
+                                  correo: widget.correo,
+                                ),
                               ),
                             );
                           });

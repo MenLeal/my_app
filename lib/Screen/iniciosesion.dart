@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/Models/paciente.dart';
 import 'package:my_app/Screen/inicioadmin.dart';
-import 'package:my_app/registro.dart';
+import 'package:my_app/Screen/registro.dart';
 import '/Screen/avisos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -87,7 +87,7 @@ class _InicioPagState extends State<InicioPag> {
                         if (value!.isEmpty ||
                             !RegExp(r'^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9])+(\.[a-zA-Z0-9_-]+)+$')
                                 .hasMatch(value)) {
-                          return "Poner CORREO correcto";
+                          return "Introduce un CORREO correcto";
                         } else {
                           return null;
                         }
@@ -130,7 +130,7 @@ class _InicioPagState extends State<InicioPag> {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty || value.length < 8) {
-                          return "Poner una CONTRASEÑA VÁLIDA";
+                          return "Introduce una CONTRASEÑA VÁLIDA";
                         } else {
                           return null;
                         }

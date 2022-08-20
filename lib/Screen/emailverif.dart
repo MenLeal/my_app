@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/Screen/avisos.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailVerification extends StatefulWidget {
   const EmailVerification({Key? key, this.correo}) : super(key: key);
@@ -49,7 +51,7 @@ class _EmailVerificationState extends State<EmailVerification> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? Text("puto")
+      ? const AvisosPage()
       : Scaffold(
           appBar: AppBar(title: const Text("Verificar Correo")),
           body: Padding(
@@ -84,6 +86,8 @@ class _EmailVerificationState extends State<EmailVerification> {
 
   void resendEmail() {}
   Future checkEmailVerified() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool("emailverif", true);
     await FirebaseAuth.instance.currentUser!.reload();
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;

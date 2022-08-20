@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/Screen/iniciosesion.dart';
 
 class EmailVerification extends StatefulWidget {
   const EmailVerification({Key? key, this.correo}) : super(key: key);
@@ -49,7 +50,7 @@ class _EmailVerificationState extends State<EmailVerification> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? Text("puto")
+      ? const InicioPag()
       : Scaffold(
           appBar: AppBar(title: const Text("Verificar Correo")),
           body: Padding(

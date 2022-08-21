@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/Models/paciente.dart';
 import 'package:my_app/Screen/emailverif.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/Screen/iniciosesion.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -551,6 +552,8 @@ class _SaludDatosState extends State<SaludDatos> {
                                   numcontacto: numcontacto,
                                   domcontacto: domiciliocontacto,
                                   fechanacimiento: fecha);
+                              setPrefs(widget.nombre, widget.correo,
+                                  widget.direccion, widget.numero);
                               await _usuarios.doc(uid).set(paciente.toJson());
                               curpController.text = "";
                               alergiasController.text = "";
@@ -646,5 +649,16 @@ class _SaludDatosState extends State<SaludDatos> {
         ),
       ),
     );
+  }
+
+  void setPrefs(
+      String? nombre, String? correo, String? direccion, String? numero) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("nombre", nombre.toString());
+    prefs.setString("direccion", direccion.toString());
+    prefs.setString("numero", numero.toString());
+    prefs.setString("correo", correo.toString());
+    prefs.setBool("login", true);
+
   }
 }

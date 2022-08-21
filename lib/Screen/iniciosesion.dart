@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/Models/paciente.dart';
+import 'package:my_app/Screen/emailverif.dart';
 import 'package:my_app/Screen/inicioadmin.dart';
 import 'package:my_app/Screen/registro.dart';
 import '/Screen/avisos.dart';
@@ -312,11 +313,20 @@ class _InicioPagState extends State<InicioPag> {
           prefs.setString("direccion", paciente.direccion.toString());
           prefs.setString("numero", paciente.numero.toString());
           prefs.setString("correo", paciente.correo.toString());
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const AvisosPage(),
-            ),
-          );
+          if (FirebaseAuth.instance.currentUser!.emailVerified) {
+          prefs.setBool("emailverif", true);
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const AvisosPage(),
+              ),
+            );
+          } else {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const EmailVerification(),
+              ),
+            );
+          }
         });
       } on FirebaseAuthException catch (e) {
         print('Failed with error code: ${e.code}');

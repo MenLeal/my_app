@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/Screen/iniciosesion.dart';
 import 'package:my_app/Screen/avisos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,12 +40,11 @@ class _EmailVerificationState extends State<EmailVerification> {
       await user.sendEmailVerification().whenComplete(() {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Enviado")));
-        isEmailVerified = true;
       }).onError((error, stackTrace) => ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error.toString()))));
-    } catch (e) {
+    } on FirebaseAuthException catch (e)  {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(e.message.toString())));
     }
   }
 
@@ -64,12 +62,13 @@ class _EmailVerificationState extends State<EmailVerification> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Se ha enviado la verificación a su correo, si no la encuentra revisar en la carpeta de SPAM",
+                  "Se ha enviado la verificación a su correo, si no la encuentra revise en la carpeta de SPAM",
                   style: TextStyle(
                     fontSize: 23,
                   ),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 10,),
                 ElevatedButton.icon(
                   onPressed: resendEmail,
                   style: ElevatedButton.styleFrom(
@@ -98,7 +97,7 @@ class _EmailVerificationState extends State<EmailVerification> {
       final prefs = await SharedPreferences.getInstance();
       prefs.setBool("emailverif", true);
       prefs.setBool("login", true);
+      timer?.cancel();
     }
-    if (isEmailVerified) timer?.cancel();
   }
 }

@@ -58,6 +58,7 @@ class _EditarUserState extends State<EditarUser> {
       appBar: AppBar(
         title: const Text("Datos del Usuario"),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -235,18 +236,25 @@ class _EditarUserState extends State<EditarUser> {
                     final String numero = numeroController.text.trim();
                     final String domicilio = direccionController.text.trim();
                     final String correo = correoController.text.trim();
-                    final docPaciente = FirebaseFirestore.instance.collection('pacientes').doc(uid);
-                    
-                    docPaciente.update({'nombre': nombre, 'numero': numero, 'domicilio': domicilio, 'correo': correo}).whenComplete(() async {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Se ha actualizado los datos con éxito')));
+                    final docPaciente = FirebaseFirestore.instance
+                        .collection('pacientes')
+                        .doc(uid);
+
+                    docPaciente.update({
+                      'nombre': nombre,
+                      'numero': numero,
+                      'domicilio': domicilio,
+                      'correo': correo
+                    }).whenComplete(() async {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('Se ha actualizado los datos con éxito')));
                       final prefs = await SharedPreferences.getInstance();
                       prefs.setString('nombre', nombre);
                       prefs.setString('numero', numero);
                       prefs.setString('direccion', domicilio);
-                      prefs.setString('correo', correo);  
+                      prefs.setString('correo', correo);
                     });
-
                   }
                 },
                 child: Container(

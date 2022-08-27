@@ -13,6 +13,7 @@ class EmailVerification extends StatefulWidget {
 
 class _EmailVerificationState extends State<EmailVerification> {
   bool isEmailVerified = false;
+  bool canResendEmail = false;
   Timer? timer;
 
   @override
@@ -29,7 +30,6 @@ class _EmailVerificationState extends State<EmailVerification> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     timer?.cancel();
     super.dispose();
   }
@@ -38,11 +38,18 @@ class _EmailVerificationState extends State<EmailVerification> {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification().whenComplete(() {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Enviado")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Enviado a su correo correctamente")));
       }).onError((error, stackTrace) => ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error.toString()))));
-    } on FirebaseAuthException catch (e)  {
+      setState(() {
+        canResendEmail = false;
+      });
+      await Future.delayed(const Duration(seconds: 10));
+       setState(() {
+        canResendEmail = true;
+      });
+    } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message.toString())));
     }
@@ -68,9 +75,13 @@ class _EmailVerificationState extends State<EmailVerification> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton.icon(
-                  onPressed: resendEmail,
+                  onPressed: () {
+                    canResendEmail ? sendEmailVerification() : null;
+                  },
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(50)),
                   icon: const Icon(
@@ -87,7 +98,6 @@ class _EmailVerificationState extends State<EmailVerification> {
           ),
         );
 
-  void resendEmail() {}
   Future checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser!.reload();
     setState(() {

@@ -22,7 +22,7 @@ void main() async {
   final providerNotification = PushNotificationProvider();
   providerNotification.initNotifications();
   runApp(MaterialApp(
-      title: 'AlarmApp',
+      title: 'Urgencias',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.red),
       home: login == true && emailverif == true

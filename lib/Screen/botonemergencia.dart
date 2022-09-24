@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_app/Models/alerta.dart';
-import 'package:my_app/Screen/servicio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BotonEmergencia extends StatefulWidget {

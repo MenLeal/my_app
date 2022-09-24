@@ -138,7 +138,9 @@ class _RetroPageState extends State<RetroPage> {
             const Icon(Icons.location_on, color: Colors.red),
             Text("${e.longitud}"),
             const Text(","),
-            const SizedBox(width: 5,),
+            const SizedBox(
+              width: 5,
+            ),
             Text("${e.latitud}"),
           ],
         ),

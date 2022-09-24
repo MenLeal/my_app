@@ -125,6 +125,7 @@ class _InicioPagState extends State<InicioPag> {
                                   const BorderSide(color: Colors.white70))),
                     ),
                   ),
+                  //Contra
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30)
                         .copyWith(bottom: 10),
@@ -190,6 +191,7 @@ class _InicioPagState extends State<InicioPag> {
                   const SizedBox(
                     height: 40,
                   ),
+                  //Boton Login
                   GestureDetector(
                     onTap: () {
                       signIn();
@@ -227,6 +229,7 @@ class _InicioPagState extends State<InicioPag> {
                   const SizedBox(
                     height: 20,
                   ),
+                  //Boton a Registro
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushReplacement(
@@ -255,35 +258,35 @@ class _InicioPagState extends State<InicioPag> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: 23,
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                        onTap: (() {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const InicioAdmin(),
-                            ),
-                          );
-                        }),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text('Admin',
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                    color: Colors.white.withOpacity(.8),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            const Icon(
-                              Icons.admin_panel_settings,
-                              color: Colors.white,
-                            ),
-                          ],
-                        )),
-                  ),
+                  //Container(
+                  //  height: 23,
+                  //  width: double.infinity,
+                  //  margin: const EdgeInsets.symmetric(horizontal: 30),
+                  //  alignment: Alignment.center,
+                  //  child: GestureDetector(
+                  //      onTap: (() {
+                  //        Navigator.of(context).pushReplacement(
+                  //          MaterialPageRoute(
+                  //            builder: (context) => const InicioAdmin(),
+                  //          ),
+                  //        );
+                  //      }),
+                  //      child: Row(
+                  //        mainAxisAlignment: MainAxisAlignment.end,
+                  //        children: [
+                  //          Text('Admin',
+                  //              textAlign: TextAlign.right,
+                  //              style: TextStyle(
+                  //                  color: Colors.white.withOpacity(.8),
+                  //                  fontSize: 15,
+                  //                  fontWeight: FontWeight.bold)),
+                  //          const Icon(
+                  //            Icons.admin_panel_settings,
+                  //            color: Colors.white,
+                  //          ),
+                  //        ],
+                  //      )),
+                  //),
                 ],
               ),
             ),
@@ -314,7 +317,7 @@ class _InicioPagState extends State<InicioPag> {
           prefs.setString("numero", paciente.numero.toString());
           prefs.setString("correo", paciente.correo.toString());
           if (FirebaseAuth.instance.currentUser!.emailVerified) {
-          prefs.setBool("emailverif", true);
+            prefs.setBool("emailverif", true);
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const AvisosPage(),

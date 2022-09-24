@@ -553,7 +553,7 @@ class _SaludDatosState extends State<SaludDatos> {
                                   domcontacto: domiciliocontacto,
                                   fechanacimiento: fecha);
                               setPrefs(widget.nombre, widget.correo,
-                                  widget.direccion, widget.numero);
+                                  widget.direccion, widget.numero, uid);
                               await _usuarios.doc(uid).set(paciente.toJson());
                               curpController.text = "";
                               alergiasController.text = "";
@@ -651,14 +651,14 @@ class _SaludDatosState extends State<SaludDatos> {
     );
   }
 
-  void setPrefs(
-      String? nombre, String? correo, String? direccion, String? numero) async {
+  void setPrefs(String? nombre, String? correo, String? direccion,
+      String? numero, String? uid) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("nombre", nombre.toString());
     prefs.setString("direccion", direccion.toString());
     prefs.setString("numero", numero.toString());
     prefs.setString("correo", correo.toString());
     prefs.setBool("login", true);
-
+    prefs.setString('uid', uid.toString());
   }
 }

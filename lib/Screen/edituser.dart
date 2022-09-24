@@ -35,7 +35,6 @@ class _EditarUserState extends State<EditarUser> {
 
   void getPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('page', 2);
     setState(() {
       nombreController.text = prefs.getString("nombre").toString();
       numeroController.text = prefs.getString("numero").toString();
@@ -44,17 +43,7 @@ class _EditarUserState extends State<EditarUser> {
       uid = prefs.getString("uid");
     });
   }
-  void setPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('page', 0);
-  }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    setPrefs();
-    super.dispose();
-  }
   @override
   void initState() {
     super.initState();

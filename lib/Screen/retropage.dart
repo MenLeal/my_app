@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_app/Models/alerta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_app/Screen/avisos.dart';
@@ -22,6 +23,8 @@ class _RetroPageState extends State<RetroPage> {
 
   Future<void> showInformationDialog(BuildContext context, String estado,
       String motivo, String datetime, String fechahoramotivo) async {
+        int timestamp = int.parse(datetime);
+        var date= DateFormat('d/M/y').add_jm().format( DateTime.fromMillisecondsSinceEpoch(timestamp));
     return await showDialog(
         context: context,
         builder: (context) {
@@ -45,7 +48,7 @@ class _RetroPageState extends State<RetroPage> {
                             height: 15,
                           ),
                           Text(
-                            "Enviada: $datetime",
+                            "Enviada: $date",
                             style: const TextStyle(
                                 fontSize: 16, fontStyle: FontStyle.italic),
                           ),
@@ -155,6 +158,7 @@ class _RetroPageState extends State<RetroPage> {
 Stream<List<Alerta>> readAlertas(String? uid) => FirebaseFirestore.instance
     .collection('alertas')
     .where("uid", isEqualTo: uid)
+    .orderBy("fechahora",descending: true)
     .snapshots()
     .map((snapshots) =>
         snapshots.docs.map((e) => Alerta.fromJson(e.data())).toList());

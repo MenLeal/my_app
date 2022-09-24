@@ -107,6 +107,7 @@ class _EmailVerificationState extends State<EmailVerification> {
       final prefs = await SharedPreferences.getInstance();
       prefs.setBool("emailverif", true);
       prefs.setBool("login", true);
+      prefs.setString('uid', FirebaseAuth.instance.currentUser!.uid.toString());
       timer?.cancel();
     }
   }

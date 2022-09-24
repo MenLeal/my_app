@@ -7,6 +7,7 @@ class Alerta {
   String? estado;
   String? motivo;
   String? fechahoramotivo;
+  String? token;
 
   Alerta(
       {this.id,
@@ -16,7 +17,8 @@ class Alerta {
       this.longitud,
       this.estado,
       this.motivo,
-      this.fechahoramotivo});
+      this.fechahoramotivo,
+      this.token});
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -27,6 +29,7 @@ class Alerta {
         "estado": estado,
         "motivo": motivo,
         "fechahoramotivo": fechahoramotivo,
+        "token": token,
       };
 
   static Alerta fromJson(Map<String, dynamic> json) => Alerta(
@@ -38,5 +41,6 @@ class Alerta {
         estado: json['estado'],
         motivo: json['motivo'],
         fechahoramotivo: json['fechahoramotivo'], 
+        token: json['token'],
       );
 }

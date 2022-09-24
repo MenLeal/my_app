@@ -15,18 +15,19 @@ class BotonEmergencia extends StatefulWidget {
 class _BotonEmergenciaState extends State<BotonEmergencia> {
   bool pressed = false;
   String? uid;
+  String? token;
 
   final CollectionReference _alertas =
       FirebaseFirestore.instance.collection('alertas');
 
   Position? _position;
+
   void getLocation() async {
     Position position = await _determinePosition();
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _position = position;
-    });
+    _position = position;
     uid = prefs.getString("uid");
+    token = prefs.getString("token");
     prefs.setInt('page', 0);
   }
 
@@ -107,14 +108,15 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
                 final alerta = Alerta(
                     id: _alertaDoc.id,
                     uid: uid,
-                    fechahora:
-                        DateFormat('d/M/y').add_jm().format(DateTime.now()),
+                    fechahora: DateTime.now().millisecondsSinceEpoch.toString(),
                     latitud: _position!.latitude.toString(),
                     longitud: _position!.longitude.toString(),
-                    estado: "pendiente");
+                    estado: "pendiente",
+                    token: token);
                 await _alertaDoc.set(alerta.toJson()).whenComplete(() {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Se ha enviado la alerta')));
+                  print(DateTime.now().millisecondsSinceEpoch.toString());
                 });
               },
               child: Padding(

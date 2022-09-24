@@ -365,7 +365,7 @@ class _RegistroPagState extends State<RegistroPag> {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty || value.length < 8) {
-                          return "Poner una CONTRASEÑA MAYOR A 8 DIGITOS";
+                          return "Poner una CONTRASEÑA de al menos 8 DIGITOS";
                         } else {
                           if (value != contraController.text) {
                             return "Poner CONTRASEÑA IGUAL";

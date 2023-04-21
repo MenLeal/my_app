@@ -163,12 +163,14 @@ class _HogarState extends State<Hogar> {
                 if (formkey.currentState!.validate()) {
                   final String dest = destino.text.trim();
                   final String date = DateFormat.yMd().format(selectedDate);
-                  final _servicioDoc =
-                      FirebaseFirestore.instance.collection('servicio').doc();
+                  final _servicioDoc = FirebaseFirestore.instance
+                      .collection('servicio')
+                      .doc(DateTime.now().millisecondsSinceEpoch.toString());
                   final servicio = Servicio(
-                      id: _servicioDoc.id,
+                      id: DateTime.now().millisecondsSinceEpoch.toString(),
                       destino: dest,
                       tipo: widget.title,
+                      estado: "pendiente",
                       fecha: date);
                   await _servicioDoc
                       .set(servicio.regularJson())

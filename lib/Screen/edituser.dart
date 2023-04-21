@@ -238,7 +238,6 @@ class _EditarUserState extends State<EditarUser> {
                     final docPaciente = FirebaseFirestore.instance
                         .collection('pacientes')
                         .doc(uid);
-
                     docPaciente.update({
                       'nombre': nombre,
                       'numero': numero,

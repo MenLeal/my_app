@@ -62,7 +62,7 @@ class _AdminPanelState extends State<AdminPanel> {
         title: Text("${e.tipo}"),
         subtitle: Row(
           children: [
-            Icon(Icons.location_city),
+            const Icon(Icons.location_city),
             Text("${e.destino}"),
           ],
         ),

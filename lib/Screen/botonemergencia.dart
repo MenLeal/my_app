@@ -80,6 +80,7 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white60,
         appBar: AppBar(
           title: const Text("Enviar Emergencia"),
           centerTitle: true,
@@ -103,12 +104,12 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
               shape: const CircleBorder(),
               onLongPress: () async {
                 getLocation();
-                final _alertaDoc =
-                    FirebaseFirestore.instance.collection('alertas').doc();
+                final _alertaDoc = FirebaseFirestore.instance
+                    .collection('alertas')
+                    .doc(DateTime.now().millisecondsSinceEpoch.toString());
                 final alerta = Alerta(
-                    id: _alertaDoc.id,
+                    id: DateTime.now().millisecondsSinceEpoch.toString(),
                     uid: uid,
-                    fechahora: DateTime.now().millisecondsSinceEpoch.toString(),
                     latitud: _position!.latitude.toString(),
                     longitud: _position!.longitude.toString(),
                     estado: "pendiente",
@@ -121,7 +122,7 @@ class _BotonEmergenciaState extends State<BotonEmergencia> {
               },
               child: Padding(
                 padding: const EdgeInsets.all(0),
-                child: Image.asset("images/logogeneral.png"),
+                child: Image.asset("images/cruzbutton.png"),
               ),
             )));
   }

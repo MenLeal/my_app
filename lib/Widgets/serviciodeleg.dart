@@ -125,12 +125,14 @@ class _DelegacionState extends State<Delegacion> {
               onTap: () async {
                 if (formkey.currentState!.validate()) {
                   final String date = DateFormat.yMd().format(selectedDate);
-                  final _servicioDoc =
-                      FirebaseFirestore.instance.collection('servicio').doc();
+                  final _servicioDoc = FirebaseFirestore.instance
+                      .collection('servicio')
+                      .doc(DateTime.now().millisecondsSinceEpoch.toString());
                   final servicio = Servicio(
-                      id: _servicioDoc.id,
+                      id: DateTime.now().millisecondsSinceEpoch.toString(),
                       destino: "delegacion",
                       tipo: widget.title,
+                      estado: "pendiente",
                       fecha: date);
                   await _servicioDoc
                       .set(servicio.regularJson())

@@ -25,6 +25,23 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
 
   String? oxigeno = "SI";
   List<String> listOxigeno = ["SI", "NO "];
+
+  String? uid;
+  void getPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      uid = prefs.getString('uid')!;
+      print(uid);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPrefs();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -258,14 +275,18 @@ class _ServicioAmbulanciaState extends State<ServicioAmbulancia> {
                     final String orig = origen.text.trim();
                     final String dest = destino.text.trim();
                     final String date = DateFormat.yMd().format(selectedDate);
-                    final _servicioDoc =
-                        FirebaseFirestore.instance.collection('servicio').doc();
+                    var id = DateTime.now().millisecondsSinceEpoch.toString();
+                    final _servicioDoc = FirebaseFirestore.instance
+                        .collection('servicio')
+                        .doc(id);
                     final servicio = Servicio(
-                        id: _servicioDoc.id,
+                        id: id,
+                        uid: uid,
                         origen: orig,
                         destino: dest,
                         tipo: "Traslado",
                         fecha: date,
+                        estado: "pendiente",
                         oxigeno: oxigeno);
                     await _servicioDoc
                         .set(servicio.ambulanciaJson())
